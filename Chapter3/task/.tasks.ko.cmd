@@ -1,0 +1,1 @@
+cmd_/home/jaeyoungyu/Operating-System/Chapter3/task/tasks.ko := ld -r -m elf_x86_64 -z max-page-size=0x200000 -T ./scripts/module-common.lds --build-id  -o /home/jaeyoungyu/Operating-System/Chapter3/task/tasks.ko /home/jaeyoungyu/Operating-System/Chapter3/task/tasks.o /home/jaeyoungyu/Operating-System/Chapter3/task/tasks.mod.o ;  true
