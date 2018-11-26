@@ -11,28 +11,49 @@
 typedef char* string;
 typedef struct history{
     char str[80];
-    struct history *next;
-    struct history *before;
+    struct history *llink;
+    struct history *rlink;
 }history;
 
 history* head;
 history* cur; 
 history* tail;
+int n=0;
 
-void init(){
-    head = malloc(sizeof(history));
-    tail = cur = head;
+history* create(string str){
+    n++;
+    history* new_node;
+    new_node = (history*)malloc(sizeof(history));
+    strcpy(new_node->str,str);
+    new_node->rlink = NULL;
+    new_node->llink = NULL;
+    return new_node;
 }
 
 void push_back(string str){
-    strcpy(cur->str,str);
+    if(!head){
+        head = create(str);
+        tail = head;
+    }
+    else{
+        history* temp = create(str);
+        tail -> rlink = temp;
+        temp -> llink = tail;
+        temp -> rlink = NULL;
+        tail = temp;
+    }
+}
 
+void init(){
+    head = NULL;
+    tail = NULL;
+    cur = NULL;
 }
 
 int main(void){
-    
     string args[MAX_LINE/2+1]={NULL,};
     int should_run = 1;
+    
     init();
 
     while(should_run){
@@ -40,25 +61,31 @@ int main(void){
         fflush(stdout);
         
         int i=0;
-        string original;
-
+        char original[80];
+        char temp[80];
         fgets(original,MAX_LINE/2+1,stdin);
-
-        string command = strtok(original," \n");
-        if(!command){
+        strcpy(temp,original);
+        string command = strtok(temp," \n");
+        if(!command)
             continue;
-        }
-
         if(!strcmp("history",command)){
+            cur = tail;
+            int x = n;
+            while(cur){
+                printf("%d %s",x,cur->str);
+                cur=cur->llink;
+                x--;
+            }
             continue;
         }
         else if(!strcmp("!!",command)){
+            printf("%s\n",tail->str);
             continue;
         }
         else if(!strcmp("!",command)){
             continue;
         }
-
+        push_back(original);
         while(command){
             args[i++]=command;	
             command = strtok(NULL," \n");
