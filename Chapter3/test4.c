@@ -8,7 +8,6 @@
 int nums[SIZE] = {0,1,2,3,4};
 
 int main(){
-    
     int i;
     pid_t pid;
     pid = fork();

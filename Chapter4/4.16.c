@@ -9,9 +9,9 @@
 #define NTHREAD 3
 
 int arr[END];
+int max,min,avg;
 
 void* get_max(){
-    int max;
     int i;
     for(i=0;i<END;i++){
         if(i==0){
@@ -24,12 +24,10 @@ void* get_max(){
             }
         }
     }
-    printf("The maximum value is %d\n",max);
     pthread_exit(0);
 }
 
 void* get_min(){
-    int min;
     int i;
     for(i=0;i<END;i++){
         if(i==0){
@@ -41,18 +39,15 @@ void* get_min(){
             }
         }
     }
-    printf("The minimum value is %d\n",min);
     pthread_exit(0);
 }
 
 void* get_avg(){
-    int avg;
     int i,sum=0;
     for(i=0;i<END;i++){
         sum+=arr[i];
     }
     avg = sum/END;
-    printf("The average value is %d\n",avg);
     pthread_exit(0);
 }
 
@@ -63,11 +58,8 @@ pthread_attr_t attr[NTHREAD];
 
     int i;
     
-    for(i=0;i<7;i++){
-        scanf("%d",&arr[i]);
-    }
     for(i=0;i<7;i++)
-        printf("%d\n",arr[i]);
+        scanf("%d",&arr[i]);
 
     pid = fork();
 
@@ -83,6 +75,9 @@ pthread_attr_t attr[NTHREAD];
 
         for(i=0;i<NTHREAD;i++)
             pthread_join(tid[i],NULL);
+        printf("The average value is %d\n",avg);
+        printf("The minimum value is %d\n",min);
+        printf("The maximum value is %d\n",max);
     }
     else if(pid>0){
         wait(NULL);
